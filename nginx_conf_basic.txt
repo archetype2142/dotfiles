@@ -1,0 +1,34 @@
+# ------ SERVER CONFIG NGINX port 80 -------
+# sudo nano /etc/nginx/sites-enabled/app.conf
+
+server {
+  listen 80;
+  server_name <host>;
+
+  # Tell Nginx and Passenger where your app's 'public' directory is
+  root /var/www/app/public;
+
+  # Turn on Passenger
+  passenger_enabled on;
+  passenger_ruby /home/app/.rbenv/versions/3.0.0/bin/ruby;
+}
+
+# ----- Create postgres server -----
+# https://severalnines.com/product/clustercontrol
+
+# sudo nano /etc/nginx/sites-enabled/app.conf
+# sudo chown -R user:user /var/www/app/public_html
+# sudo /usr/lib/postgresql/10/bin/pg_ctl -D /var/lib/postgresql/10/main -l logfile start
+
+# bundle exec rake secret
+
+# nano config/secrets.yml
+
+# --------- FILE(config/secrets.yml) ------------
+# production:
+#   secret_key_base: <%=ENV["SECRET_KEY_BASE"]%>
+# --------------- --  ----------------------------
+
+# chmod 600 config/database.yml config/secrets.yml
+# bundle exec rake assets:precompile db:migrate RAILS_ENV=production
+
